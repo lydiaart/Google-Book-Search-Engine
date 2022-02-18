@@ -4,7 +4,22 @@ const { signToken } = require('../utils/auth');
 
 const resolvers = {
     Query: {
-        me: async () => { }
+        me: async (parent, args, context) => {
+            if (context.user) {
+                const foundUser = await User.findOne({
+                    _id: context.user._id
+                });
+
+                if (!foundUser) {
+                    return resolvers.status(400).json({ message: 'Cannot find a user with this id!' });
+                }
+
+                return foundUser;
+            } else {
+                throw new AuthenticationError('Login is required!');
+            }
+
+        },
     },
     Mutation: {
         login: async (parent, { email, password }) => {
@@ -32,22 +47,34 @@ const resolvers = {
         },
 
         saveBook: async (parent, { BookData }, context) => {
-            console.log(user);
-            try {
+            console.log(context.user);
+
+            if (context.user) {
                 const updatedUser = await User.findOneAndUpdate(
                     { _id: user._id },
-                    { $addToSet: { savedBooks: body } },
+                    { $addToSet: { savedBooks: BookData } },
                     { new: true, runValidators: true }
                 );
-                return resolvers.json(updatedUser);
-            } catch (err) {
-                console.log(err);
-                return resolvers.status(400).json(err);
+                return updatedUser;
+            }
+            else {
+                throw new AuthenticationError('Login is required!');
             }
         },
-        
-        removeBook: async (parent, { bookId }, context) => {
 
+        removeBook: async (parent, { bookId }, context) => {
+            if (context.user) {
+                const updatedUser = await User.findOneAndUpdate(
+                    { _id: user._id },
+                    { $pull: { savedBooks: { bookId: URLSearchParams.bookId } } },
+                    { new: true }
+                );
+
+                return updatedUser;
+            }
+            else {
+                throw new AuthenticationError('Login is required!');
+            }
         }
     }
 
