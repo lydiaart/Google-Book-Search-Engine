@@ -40,7 +40,8 @@ const resolvers = {
         },
 
         addUser: async (parent, { username, email, password }) => {
-            const user = await User.create(args);
+           console.log(username, email, password)
+            const user = await User.create({username, email, password});
             const token = signToken(user);
 
             return { token, user };
@@ -51,7 +52,7 @@ const resolvers = {
 
             if (context.user) {
                 const updatedUser = await User.findOneAndUpdate(
-                    { _id: user._id },
+                    { _id: context.user._id },
                     { $addToSet: { savedBooks: BookData } },
                     { new: true, runValidators: true }
                 );
@@ -65,8 +66,8 @@ const resolvers = {
         removeBook: async (parent, { bookId }, context) => {
             if (context.user) {
                 const updatedUser = await User.findOneAndUpdate(
-                    { _id: user._id },
-                    { $pull: { savedBooks: { bookId: URLSearchParams.bookId } } },
+                    { _id: context.user._id },
+                    { $pull: { savedBooks: { bookId: bookId } } },
                     { new: true }
                 );
 
