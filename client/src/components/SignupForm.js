@@ -30,8 +30,11 @@ const [addUser, { error }] = useMutation(ADD_USER)
       event.stopPropagation();
     }
 
+    
     try {
-      const {data} = await addUser(userFormData);
+      const {data} = await addUser({
+        variables: userFormData
+      });
 
     
       Auth.login(data.addUser.token);
