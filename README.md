@@ -5,7 +5,7 @@
  
 
 ## Description
-Google-Book-Search-Engine is an application that designed for avid readers to search, find, and save the list of books for future purchase.
+Google-Book-Search-Engine is an application that designed for avid readers to search, find, and save a list of books for future purchase.
 
 
 
@@ -51,13 +51,13 @@ For a clearer video, please click the following link.<br />
 
 ## Credits
 
-  [Lydia Loy](https://github.com/flowingcityloy)<br/>
+  [Lydia L](https://github.com/flowingcityloy)<br/>
 
 
 
 ## Questions
   
-If you have any questions or issues please create issue here:<br/>
+If you have any questions or issues please create an issue here:<br/>
 [Issues](https://github.com/flowingcityloy/Google-Book-Search-Engine/issues) 
 
 
